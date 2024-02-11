@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { throttledGetDataFromApi } from './index';
 
 const createOptions = {
   baseURL: 'https://jsonplaceholder.typicode.com',
@@ -31,7 +32,6 @@ jest.mock('lodash', () => ({
 
 describe('throttledGetDataFromApi', () => {
   test('should create instance with provided base url', async () => {
-    const { throttledGetDataFromApi } = await import('./index');
     jest.spyOn(axios, 'create');
     await throttledGetDataFromApi(path);
     expect(axios.create).toHaveBeenCalledWith(createOptions);
@@ -39,7 +39,6 @@ describe('throttledGetDataFromApi', () => {
   });
 
   test('should perform request to correct provided url', async () => {
-    const { throttledGetDataFromApi } = await import('./index');
     get = jest.fn().mockImplementation(get);
     await throttledGetDataFromApi(path);
     expect(get).toHaveBeenCalledWith(path);
@@ -47,7 +46,6 @@ describe('throttledGetDataFromApi', () => {
   });
 
   test('should return response data', async () => {
-    const { throttledGetDataFromApi } = await import('./index');
     const result = await throttledGetDataFromApi(path);
     expect(result).toBe(response.data);
   });
